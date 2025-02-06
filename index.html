@@ -1,10 +1,47 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8">
-    <title>XWallPaper</title>
-  </head>
-  <body>
-    <h1>欢迎使用 XWallPaper 壁纸客户端</h1>
-  </body>
-</html> 
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Image Folder Viewer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    #imageContainer img {
+      max-width: 200px;
+      margin: 10px;
+      border: 1px solid #ccc;
+      padding: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Select a Folder to Display Images</h1>
+  <input type="file" id="folderInput" webkitdirectory directory multiple />
+  <div id="imageContainer"></div>
+
+  <script>
+    const folderInput = document.getElementById('folderInput');
+    const imageContainer = document.getElementById('imageContainer');
+
+    folderInput.addEventListener('change', (event) => {
+      const files = event.target.files;
+      imageContainer.innerHTML = ''; // Clear previous images
+
+      Array.from(files).forEach(file => {
+        // Only process image files
+        if (file.type.startsWith('image/')) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            imageContainer.appendChild(img);
+          }
+          reader.readAsDataURL(file);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
